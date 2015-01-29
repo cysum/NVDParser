@@ -11,12 +11,12 @@ class LogParse:
         file = open(file_name, "r")
         soup = BeautifulSoup(file)
         parts = soup.findAll("entry")
-        self.extractEntries(parts)
         for entry in parts:
             dict_result = {}
             part_attrs = dict(entry.attrs)
             dict_result['CVE'] = str(part_attrs['id'])[4:]
             dict_result['vulnerableSoftware'] = {}
+            dict_result['summary'] = str(entry.find("vuln:summary").contents)
             softwareList = entry.findAll("vuln:vulnerable-software-list")
             for software in softwareList:
                 temps = software.findAll("vuln:product")
